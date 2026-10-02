@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — One Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="dot"></span> One Ecosystem</a>
+    <nav>
+      <a href="index.html">Public site</a>
+      <a href="card-scrape.html">Card Scrape</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Admin login -->
+<div class="login-shell" id="loginShell">
+  <h2>Admin sign-in</h2>
+  <p>Sign in to manage events, registrations, and contacts.</p>
+  <div class="card">
+    <div class="field">
+      <label for="adminEmail">Email</label>
+      <input id="adminEmail" type="email" autocomplete="username" placeholder="admin@example.com">
+    </div>
+    <div class="field">
+      <label for="adminPass">Password</label>
+      <input id="adminPass" type="password" autocomplete="current-password" placeholder="Enter your password">
+    </div>
+    <button class="btn btn-primary" id="loginBtn" style="width:100%; justify-content:center">Sign in</button>
+    <p id="loginStatus" role="status" style="font-size:.82rem; margin-top:12px"></p>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div class="admin-shell" id="adminShell" style="display:none">
+  <div class="admin-topbar">
+    <h2 style="margin:0">Admin panel</h2>
+    <button class="btn btn-dark btn-small" id="logoutBtn" style="display:none" type="button">Log out</button>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab-btn active" data-tab="events">Events</button>
+    <button class="tab-btn" data-tab="attendees">Registrations</button>
+    <button class="tab-btn" data-tab="cards">Visiting card scanner</button>
+    <button class="tab-btn" data-tab="bookings">Bookings</button>
+    <button class="tab-btn" data-tab="contacts">Extracted contacts</button>
+    <button class="tab-btn" data-tab="automation">Automations</button>
+  </div>
+
+  <!-- TAB: events -->
+  <div class="tab-pane active" data-pane="events">
+    <div class="admin-columns">
+      <section class="card">
+        <h3>Create an event</h3>
+        <form id="eventForm">
+          <div class="field"><label for="eventTitle">Event name</label><input id="eventTitle" name="title" required maxlength="120"></div>
+          <div class="field"><label for="eventDescription">Description</label><textarea id="eventDescription" name="description" rows="3" maxlength="1200"></textarea></div>
+          <div class="field-row">
+            <div class="field"><label for="eventDate">Date</label><input id="eventDate" name="eventDate" type="date" required></div>
+            <div class="field"><label for="eventTime">Start time</label><input id="eventTime" name="startTime" type="time"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="eventCity">City</label><input id="eventCity" name="city" required></div>
+            <div class="field"><label for="eventVenue">Venue</label><input id="eventVenue" name="venue"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="eventCapacity">Places</label><input id="eventCapacity" name="capacity" type="number" min="1" required></div>
+            <div class="field"><label for="eventStatus">Visibility</label><select id="eventStatus" name="status"><option value="draft">Draft</option><option value="published">Publish now</option></select></div>
+          </div>
+          <button class="btn btn-primary" type="submit">Save event</button>
+          <p id="eventStatusMessage" role="status" class="form-status"></p>
+        </form>
+      </section>
+      <section class="card">
+        <div class="table-heading"><h3>Event schedule</h3><button class="btn btn-dark btn-small" id="refreshEvents" type="button">Refresh</button></div>
+        <div class="table-scroll"><table class="data-table" id="eventsTable">
+          <thead><tr><th>Event</th><th>Date</th><th>City</th><th>Places</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- TAB: attendee registrations -->
+  <div class="tab-pane" data-pane="attendees">
+    <div class="card">
+      <div class="table-heading">
+        <div><h3>Attendee register</h3><p>Mark attendance after the event. Thank-you workflows target only present attendees who opted in.</p></div>
+        <div class="admin-actions"><select id="registrationEventFilter" aria-label="Filter registrations by event"><option value="">All events</option></select><button class="btn btn-dark btn-small" id="refreshRegistrations" type="button">Refresh</button></div>
+      </div>
+      <div class="table-scroll"><table class="data-table" id="registrationsTable">
+        <thead><tr><th>Event</th><th>Attendee</th><th>Contact</th><th>Places</th><th>Attendance</th><th>WhatsApp opt-in</th><th>Action</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p id="attendanceStatus" class="form-status" role="status"></p>
+      <div class="thank-you-row"><button class="btn btn-primary" id="sendThankYouBtn" type="button">Send thank-you to present attendees</button><span id="thankYouStatus" role="status"></span></div>
+    </div>
+  </div>
+
+  <!-- TAB: visiting card OCR -->
+  <div class="tab-pane" data-pane="cards">
+    <div class="card">
+      <h3>Upload a visiting card</h3>
+      <p>A quick text scan runs in your browser first, then a local AI model (open-source, via Ollama — the photo never leaves this computer) re-reads the card and corrects the fields. Review, fix anything, then save. For all 38 registry fields use the <a href="card-scrape.html">Card Scrape</a> page.</p>
+      <div class="drop-zone" id="dropZone">
+        <p style="margin:0">Drag & drop a card image here, or click to choose a file</p>
+        <input type="file" id="cardInput" accept="image/*" style="display:none">
+      </div>
+      <div id="ocrStatus" style="margin-top:12px; font-size:.85rem; color:var(--slate)"></div>
+      <div id="aiStatus" class="ai-note" hidden></div>
+      <img id="cardPreview" style="display:none; margin-top:16px; max-width:260px; border-radius:8px; border:1px solid var(--line)">
+    </div>
+
+    <div class="card" id="extractCard" style="display:none">
+      <h3>Verify extracted details</h3>
+      <form id="extractForm" class="extract-grid">
+        <div class="field"><label>Name</label><input name="name" type="text"></div>
+        <div class="field"><label>Job role</label><input name="role" type="text"></div>
+        <div class="field"><label>Company</label><input name="company" type="text"></div>
+        <div class="field"><label>Email</label><input name="email" type="email"></div>
+        <div class="field"><label>Phone</label><input name="phone" type="tel"></div>
+        <div class="field"><label>Instagram</label><input name="instagram" type="text"></div>
+        <div class="field" style="grid-column:1/-1"><label>Address</label><input name="address" type="text"></div>
+        <div class="field" style="grid-column:1/-1"><label>Other details</label><textarea name="other" rows="2"></textarea></div>
+      </form>
+      <button class="btn btn-primary" id="saveContactBtn">Save contact</button>
+      <div id="rawTextBox" style="margin-top:16px; font-size:.78rem; color:var(--slate)"></div>
+    </div>
+  </div>
+
+  <!-- TAB: bookings -->
+  <div class="tab-pane" data-pane="bookings">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+        <h3 style="margin:0">Booking submissions</h3>
+        <div>
+          <button class="btn btn-dark btn-small" id="refreshBookings">Refresh</button>
+          <a class="btn btn-ghost btn-small" style="color:var(--navy-deep); border-color:var(--line)" href="/api/bookings.csv" download>Download CSV</a>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="bookingsTable">
+          <thead><tr><th>Company</th><th>Name</th><th>Phone</th><th>Event</th><th>Date</th><th>Budget</th><th>Submitted</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: contacts -->
+  <div class="tab-pane" data-pane="contacts">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+        <h3 style="margin:0">Contacts from visiting cards</h3>
+        <div>
+          <button class="btn btn-dark btn-small" id="refreshContacts">Refresh</button>
+          <a class="btn btn-ghost btn-small" style="color:var(--navy-deep); border-color:var(--line)" href="/api/contacts.csv" download>Download CSV</a>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="contactsTable">
+          <thead><tr><th>Name</th><th>Role</th><th>Company</th><th>Email</th><th>Phone</th><th>Instagram</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: automation setup notes -->
+  <div class="tab-pane" data-pane="automation">
+    <div class="card">
+      <h3>Workflow connections</h3>
+      <p>These connections are configured on the server. The status below never exposes webhook URLs or secrets.</p>
+      <ul id="integrationStatus" class="integration-status"><li>Checking workflow connections…</li></ul>
+      <p>Configure n8n to append registrations and scanned contacts to separate Google Sheets. Incoming Meta messages can also route through n8n. See the setup guide for webhook payloads and required Meta permissions.</p>
+      <a class="btn btn-ghost btn-small setup-link" href="../README.md" target="_blank">Open integration setup</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="js/companies.js"></script>
+<script src="js/card-ai.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/events-admin.js"></script>
+</body>
+</html>

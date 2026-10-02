@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an event — One Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="dot"></span> One Ecosystem</a>
+    <nav>
+      <a href="index.html#companies">Change company</a>
+      <a href="admin.html" class="admin-link">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<section class="booking-hero">
+  <div class="hero-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="wrap">
+    <div class="company-pill" id="companyPill">Loading company…</div>
+    <h1 id="companyHeadline" style="color:#fff; font-size:1.9rem">Book your event</h1>
+    <p id="companyNote" style="color:#B9C6D4; max-width:56ch"></p>
+    <div class="progress-track" id="progressTrack">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <form class="form-shell" id="bookingForm">
+    <div class="timer-badge">Step <span id="stepNum">1</span> of 3 · about 3 minutes total</div>
+
+    <!-- STEP 1 -->
+    <div class="step active" data-step="1">
+      <h3>Your details</h3>
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" name="fullName" type="text" required placeholder="e.g. Anjali Mehta" autofocus>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="phone">WhatsApp / phone number</label>
+          <input id="phone" name="phone" type="tel" required placeholder="+91 98765 43210">
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="step-actions">
+        <span></span>
+        <button type="button" class="btn btn-primary" data-next>Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" data-step="2">
+      <h3>Event details</h3>
+      <div class="field">
+        <label>Event type</label>
+        <div class="chip-select" id="eventTypeChips" data-name="eventType"></div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="eventDate">Event date</label>
+          <input id="eventDate" name="eventDate" type="date" required>
+        </div>
+        <div class="field">
+          <label for="guestCount">Approx. guest count</label>
+          <input id="guestCount" name="guestCount" type="number" min="1" placeholder="150">
+        </div>
+      </div>
+      <div class="field">
+        <label for="city">City / venue (if known)</label>
+        <input id="city" name="city" type="text" placeholder="e.g. Ahmedabad, or venue name">
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn btn-ghost" style="color:var(--navy-deep); border-color:var(--line)" data-back>← Back</button>
+        <button type="button" class="btn btn-primary" data-next>Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" data-step="3">
+      <h3>Budget & notes</h3>
+      <div class="field">
+        <label>Approximate budget</label>
+        <div class="chip-select" id="budgetChips" data-name="budget"></div>
+      </div>
+      <div class="field">
+        <label for="message">Anything else we should know?</label>
+        <textarea id="message" name="message" rows="3" placeholder="Theme, must-haves, special requests…"></textarea>
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn btn-ghost" style="color:var(--navy-deep); border-color:var(--line)" data-back>← Back</button>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Submit booking ✓</button>
+      </div>
+    </div>
+
+    <!-- CONFIRMATION -->
+    <div class="step" data-step="confirm">
+      <div class="confirm-box">
+        <div class="tick">✓</div>
+        <h3>Booking request sent</h3>
+        <p>We've saved your enquiry and a person from <strong id="confirmCompany"></strong> will follow up shortly.</p>
+        <div class="summary-card" id="summaryCard"></div>
+        <div class="post-actions">
+          <a class="btn btn-primary" id="waFollowup" href="#" target="_blank" rel="noopener">Continue on WhatsApp</a>
+          <a class="btn btn-ghost" style="color:var(--navy-deep); border-color:var(--line)" href="index.html">Back to home</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <strong>Event Assistant</strong>
+    <button id="closeChat" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <form class="chat-input" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Ask about pricing, dates, availability…" autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
+<div class="float-stack">
+  <a class="fab fab-wa" id="waFab" href="https://wa.me/919427836887" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <span class="fab-label">Chat on WhatsApp</span>
+    <svg class="fab-svg" viewBox="0 0 24 24" aria-hidden="true"><path class="wa-bubble" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2z"/><path class="wa-phone" d="M8.7 7.3c.2-.4.5-.5.8-.5h.6c.2 0 .4.1.6.5l.8 1.9c.1.2.1.4 0 .6l-.5.7c-.1.2-.2.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.7-.7c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.3.4.5 0 .5-.2 1.4-.9 1.8-.7.4-1.6.5-2.6.1-1.7-.6-3.2-1.8-4.3-3.3-.8-1.1-1.3-2.2-1.3-3.3 0-.8.3-1.5.6-2.1z"/></svg>
+  </a>
+  <button class="fab fab-chat" id="openChat" aria-label="Open event assistant" aria-expanded="false">
+    <span class="fab-label">Ask the assistant</span>
+    <span class="fab-badge" aria-hidden="true">1</span>
+    <svg class="fab-svg chat-open" viewBox="0 0 24 24" aria-hidden="true"><path class="chat-bubble" d="M4 6.5A3 3 0 0 1 7 3.5h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-6.5L6 20.5v-4A3 3 0 0 1 4 13.5z"/><circle class="typing" cx="8.6" cy="10" r="1.2"/><circle class="typing" cx="12" cy="10" r="1.2"/><circle class="typing" cx="15.4" cy="10" r="1.2"/></svg>
+    <svg class="fab-svg chat-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+
+<script src="js/companies.js"></script>
+<script src="js/chatbot.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/motion.js"></script>
+</body>
+</html>

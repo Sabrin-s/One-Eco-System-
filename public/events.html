@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upcoming Events — One Ecosystem</title>
+<meta name="description" content="Browse upcoming One Ecosystem events and register online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<header class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="dot"></span> One Ecosystem</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="events.html" aria-current="page">Events</a>
+      <a href="admin.html" class="admin-link">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="event-hero">
+    <div class="hero-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+    <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="eyebrow hero-in" style="--i:0"><span class="live-dot"></span>THE ONE ECOSYSTEM CALENDAR</div>
+      <h1 class="split-words">Good people. <em>Well-made</em> gatherings.</h1>
+      <p class="hero-in" style="--i:4">Explore upcoming events, find the details that matter, and reserve your place directly.</p>
+    </div>
+  </section>
+  <section class="wrap" aria-labelledby="eventListTitle">
+    <div class="event-tools" data-reveal>
+      <div>
+        <div class="eyebrow-dark">Open registration</div>
+        <h2 id="eventListTitle">Upcoming events</h2>
+      </div>
+      <label class="visually-hidden" for="eventSearch">Search events by event name or city</label>
+      <input class="event-search" id="eventSearch" type="search" placeholder="Search event or city">
+    </div>
+    <p id="eventsStatus" role="status" class="event-empty" hidden></p>
+    <div class="event-grid" id="eventGrid" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand" style="color:#fff; margin-bottom:10px"><span class="dot"></span> One Ecosystem</div>
+      <p style="color:#9FB1C4; max-width:34ch">One ecosystem, five doors in — Tabhi.ai, Mondee, Miraee, Aarna and Silver Tree Events.</p>
+    </div>
+    <div><strong style="color:#fff; display:block; margin-bottom:8px">Need help?</strong><a href="https://wa.me/919427836887" target="_blank" rel="noopener">Message us on WhatsApp</a></div>
+  </div>
+</footer>
+
+<dialog class="registration-dialog" id="registrationDialog" aria-labelledby="registrationTitle">
+  <form id="registrationForm">
+    <div class="dialog-head">
+      <div><div class="eyebrow-dark">Event registration</div><h2 id="registrationTitle">Reserve your place</h2><p id="registrationEventName"></p></div>
+      <button class="dialog-close" id="closeRegistration" type="button" aria-label="Close registration">×</button>
+    </div>
+    <input name="eventId" type="hidden">
+    <div class="field"><label for="attendeeName">Full name</label><input id="attendeeName" name="fullName" autocomplete="name" required maxlength="120"></div>
+    <div class="field-row">
+      <div class="field"><label for="attendeeEmail">Email</label><input id="attendeeEmail" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="attendeePhone">Phone</label><input id="attendeePhone" name="phone" type="tel" autocomplete="tel" required></div>
+    </div>
+    <div class="field"><label for="attendeeCount">Places to reserve</label><input id="attendeeCount" name="attendeeCount" type="number" min="1" value="1" required></div>
+    <label class="consent-field"><input name="consentWhatsApp" type="checkbox"><span>I agree to receive event updates and a post-event thank-you on WhatsApp. This is optional and can be withdrawn.</span></label>
+    <button class="btn btn-primary" id="registerButton" type="submit">Confirm registration</button>
+    <p id="registrationStatus" class="registration-status" role="status"></p>
+  </form>
+</dialog>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head"><strong>Event Assistant</strong><button id="closeChat" aria-label="Close chat">×</button></div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <form class="chat-input" id="chatForm"><input id="chatInput" type="text" placeholder="Ask about events or bookings…" autocomplete="off"><button type="submit">Send</button></form>
+</div>
+<div class="float-stack">
+  <a class="fab fab-wa" href="https://wa.me/919427836887?text=Hi%2C%20I%20have%20a%20question%20about%20an%20upcoming%20event." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <span class="fab-label">Chat on WhatsApp</span>
+    <svg class="fab-svg" viewBox="0 0 24 24" aria-hidden="true"><path class="wa-bubble" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2z"/><path class="wa-phone" d="M8.7 7.3c.2-.4.5-.5.8-.5h.6c.2 0 .4.1.6.5l.8 1.9c.1.2.1.4 0 .6l-.5.7c-.1.2-.2.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.7-.7c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.3.4.5 0 .5-.2 1.4-.9 1.8-.7.4-1.6.5-2.6.1-1.7-.6-3.2-1.8-4.3-3.3-.8-1.1-1.3-2.2-1.3-3.3 0-.8.3-1.5.6-2.1z"/></svg>
+  </a>
+  <button class="fab fab-chat" id="openChat" aria-label="Open event assistant" aria-expanded="false">
+    <span class="fab-label">Ask the assistant</span>
+    <span class="fab-badge" aria-hidden="true">1</span>
+    <svg class="fab-svg chat-open" viewBox="0 0 24 24" aria-hidden="true"><path class="chat-bubble" d="M4 6.5A3 3 0 0 1 7 3.5h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-6.5L6 20.5v-4A3 3 0 0 1 4 13.5z"/><circle class="typing" cx="8.6" cy="10" r="1.2"/><circle class="typing" cx="12" cy="10" r="1.2"/><circle class="typing" cx="15.4" cy="10" r="1.2"/></svg>
+    <svg class="fab-svg chat-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+
+<script src="js/companies.js"></script>
+<script src="js/chatbot.js"></script>
+<script src="js/events.js"></script>
+<script src="js/motion.js"></script>
+</body>
+</html>

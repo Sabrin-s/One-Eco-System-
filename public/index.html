@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Ecosystem — One Home For The Event Economy</title>
+<meta name="description" content="Search, price and book hotels, venues, artists and décor across five event companies in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<header class="topnav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="dot"></span> One Ecosystem</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#about">About</a>
+      <a href="#companies">Companies</a>
+      <a href="events.html">Events</a>
+      <a href="#faq">FAQ</a>
+      <a href="admin.html" class="admin-link">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO + AVATAR ================= -->
+<section class="hero">
+  <div class="hero-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+  <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow hero-in" style="--i:0"><span class="live-dot"></span>TABHI.AI GROUP · MONDEE · MIRAEE · AARNA · SILVER TREE EVENTS</div>
+      <h1 class="split-words">One home for the <em>event economy</em></h1>
+      <p class="lede hero-in" style="--i:4">One ecosystem, five doors in. Hotels, venues, artists and décor — found, priced and confirmed in one place. Not chased through WhatsApp.</p>
+      <p class="sub hero-in" style="--i:5">Pick a company below, fill a short form, and get a confirmed enquiry moving in about three minutes.</p>
+      <div class="hero-ctas hero-in" style="--i:6">
+        <a href="#companies" class="btn btn-primary btn-glow">Start a booking <span class="btn-arrow">↓</span></a>
+        <button class="btn btn-ghost" id="replayAvatarBtn" type="button">▶ Hear the intro again</button>
+      </div>
+      <div class="hero-trust hero-in" style="--i:7">
+        <span><b>5</b> companies</span><span><b>3 min</b> to enquire</span><span><b>1</b> place to confirm</span>
+      </div>
+    </div>
+
+    <div class="avatar-card hero-in" style="--i:3">
+      <div class="avatar-stage">
+        <div class="avatar-photo-wrap" id="avatarPhotoWrap">
+          <img class="avatar-photo" src="assets/images/jalpa-portrait.jpg" alt="Jalpa Rathod">
+          <span class="avatar-badge">● Live message</span>
+          <div class="avatar-wave" id="avatarWave" aria-hidden="true"></div>
+        </div>
+        <div class="avatar-meta">
+          <strong>Jalpa Rathod</strong>
+          <span>Event Consultant · Director, Silver Tree Events</span>
+        </div>
+        <p class="avatar-caption" id="avatarCaption">Tap play to hear a personal welcome from Jalpa.</p>
+        <div class="avatar-progress"><span id="avatarProgress"></span></div>
+        <div class="avatar-controls">
+          <button class="chip-btn" id="playIntroBtn" type="button">▶ Play greeting</button>
+          <button class="chip-btn" id="muteBtn" type="button">🔊 Voice on</button>
+        </div>
+        <audio id="avatarAudio" preload="metadata">
+          <source src="assets/audio/jalpa-intro.ogg" type="audio/ogg">
+        </audio>
+      </div>
+    </div>
+  </div>
+  <a href="#how" class="scroll-cue" aria-label="Scroll to how it works"><span></span></a>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ================= HOW IT WORKS (flow) ================= -->
+<section id="how" class="flow-section">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <div class="eyebrow-dark">How it works</div>
+      <h2>From idea to confirmed, in four steps</h2>
+      <p>No more chasing rates across five apps. One flow takes you from "we're planning something" to a confirmed enquiry with a real person.</p>
+    </div>
+    <ol class="flow" id="flow">
+      <li class="flow-step" data-reveal>
+        <div class="flow-icon">🔍</div>
+        <span class="flow-num">01</span>
+        <h3>Discover</h3>
+        <p>Hear Jalpa's intro and see what each company in the ecosystem does best.</p>
+      </li>
+      <li class="flow-step" data-reveal>
+        <div class="flow-icon">🚪</div>
+        <span class="flow-num">02</span>
+        <h3>Choose a door</h3>
+        <p>Hotels, MICE, venues &amp; décor, full production or experiences — pick one.</p>
+      </li>
+      <li class="flow-step" data-reveal>
+        <div class="flow-icon">📝</div>
+        <span class="flow-num">03</span>
+        <h3>3-minute form</h3>
+        <p>Your details, the event, a budget range. Three short steps, no account.</p>
+      </li>
+      <li class="flow-step" data-reveal>
+        <div class="flow-icon">✅</div>
+        <span class="flow-num">04</span>
+        <h3>Confirmed</h3>
+        <p>A person follows up, and you can carry on the conversation on WhatsApp.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy" data-reveal>
+      <div class="section-head" style="margin-bottom:18px">
+        <div class="eyebrow-dark">About the platform</div>
+        <h2>Mondee Tech Private Limited</h2>
+      </div>
+      <p>Mondee Tech Private Limited is the India arm of Tabhi.ai, consolidating travel inventory worldwide and making it bookable across B2B, B2E and B2B2C. Its mandate inside this platform is narrow and specific: bring the wedding and event vertical onto one stack — bulk-bookable venues, artists with their own storefront, and a single place to search, quote, book and confirm.</p>
+      <p>Tabhi.ai is the intelligence the group runs on: 23 companies merged into three AI platforms across ten countries, with 65,000+ travel experts, 2M+ hotels and vacation rentals, and 50 million searches a day feeding into the same rails that Mondee, Miraee and Aarna use for events.</p>
+      <div class="stat-strip">
+        <div class="stat" data-reveal><b data-count="65" data-suffix="k+">65k+</b><span>Travel experts on the network</span></div>
+        <div class="stat" data-reveal><b data-count="2" data-suffix="M+">2M+</b><span>Hotels & vacation rentals</span></div>
+        <div class="stat" data-reveal><b data-count="50" data-suffix="M">50M</b><span>Searches per day</span></div>
+        <div class="stat" data-reveal><b data-count="2.5" data-prefix="$" data-suffix="B+">$2.5B+</b><span>Annual gross sales</span></div>
+      </div>
+    </div>
+    <div data-reveal>
+      <div class="section-head" style="margin-bottom:18px">
+        <div class="eyebrow-dark">About your event consultant</div>
+        <h2>Jalpa Rathod</h2>
+      </div>
+      <p>Event Consultant at Mondee Tech Private Limited, and Director of Silver Tree Events — digitising the event vertical while continuing to run décor and production on the ground.</p>
+      <div class="timeline" id="timeline">
+        <div>
+          <div class="yr">2011</div>
+          <div class="ev">Entered the industry on the corporate side, beginning with FICCI.</div>
+        </div>
+        <div>
+          <div class="yr">2011–2018</div>
+          <div class="ev">Destination and international weddings, corporate programmes and thematic celebrations across India and abroad. Certified balloon art master in Moscow.</div>
+        </div>
+        <div>
+          <div class="yr">2018</div>
+          <div class="ev">Founded Silver Tree Events — own décor inventory and crew, full scope from concept to site.</div>
+        </div>
+        <div>
+          <div class="yr">Today</div>
+          <div class="ev">Event Consultant at Mondee Tech Private Limited, bringing weddings and events onto the platform.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPANIES ================= -->
+<section id="companies" class="on-navy">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow-dark">Five doors in</div>
+      <h2>Choose a company to start your booking</h2>
+      <p>Each door opens a short, dedicated enquiry form. Pick the one that matches what you need — you can always reach a human on WhatsApp afterwards.</p>
+    </div>
+
+    <div class="doors" id="doorsGrid">
+      <!-- rendered by main.js from COMPANIES data -->
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <div class="eyebrow-dark">Before you ask</div>
+      <h2>The questions this industry keeps asking</h2>
+      <p>Answered here, and by the chat assistant in the corner — day or night.</p>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="brand" style="color:#fff; margin-bottom:10px"><span class="dot"></span> One Ecosystem</div>
+      <p style="color:#9FB1C4; max-width:34ch">One ecosystem, five doors in — Tabhi.ai, Mondee, Miraee, Aarna and Silver Tree Events.</p>
+    </div>
+    <div>
+      <strong style="color:#fff; display:block; margin-bottom:8px">Talk to us</strong>
+      <a href="https://wa.me/919427836887" target="_blank" rel="noopener">WhatsApp +91 94278 36887</a><br>
+      <a href="mailto:jrathod@mondee.com">jrathod@mondee.com</a><br>
+      <a href="https://instagram.com/silvertreeevents" target="_blank" rel="noopener">@silvertreeevents</a>
+    </div>
+    <div>
+      <strong style="color:#fff; display:block; margin-bottom:8px">Network</strong>
+      <a href="https://tabhi.ai" target="_blank" rel="noopener">tabhi.ai</a><br>
+      <a href="https://mondee.com" target="_blank" rel="noopener">mondee.com</a><br>
+      <a href="https://aarna.global" target="_blank" rel="noopener">aarna.global</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============== floating widgets ============== -->
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <strong>Event Assistant</strong>
+    <button id="closeChat" aria-label="Close chat">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <form class="chat-input" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Ask about pricing, dates, availability…" autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<div class="float-stack">
+  <a class="fab fab-wa" href="https://wa.me/919427836887?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20booking%20an%20event." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <span class="fab-label">Chat on WhatsApp</span>
+    <svg class="fab-svg" viewBox="0 0 24 24" aria-hidden="true"><path class="wa-bubble" d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2z"/><path class="wa-phone" d="M8.7 7.3c.2-.4.5-.5.8-.5h.6c.2 0 .4.1.6.5l.8 1.9c.1.2.1.4 0 .6l-.5.7c-.1.2-.2.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.7-.7c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.3.4.5 0 .5-.2 1.4-.9 1.8-.7.4-1.6.5-2.6.1-1.7-.6-3.2-1.8-4.3-3.3-.8-1.1-1.3-2.2-1.3-3.3 0-.8.3-1.5.6-2.1z"/></svg>
+  </a>
+  <a class="fab fab-ig" href="https://ig.me/m/silvertreeevents" target="_blank" rel="noopener" aria-label="Message on Instagram">
+    <span class="fab-label">Message on Instagram</span>
+    <svg class="fab-svg" viewBox="0 0 24 24" aria-hidden="true"><rect class="ig-frame" x="3" y="3" width="18" height="18" rx="5.5"/><circle class="ig-lens" cx="12" cy="12" r="4.2"/><circle class="ig-dot" cx="17.2" cy="6.8" r="1.2"/></svg>
+  </a>
+  <button class="fab fab-chat" id="openChat" aria-label="Open event assistant" aria-expanded="false">
+    <span class="fab-label">Ask the assistant</span>
+    <span class="fab-badge" aria-hidden="true">1</span>
+    <svg class="fab-svg chat-open" viewBox="0 0 24 24" aria-hidden="true"><path class="chat-bubble" d="M4 6.5A3 3 0 0 1 7 3.5h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-6.5L6 20.5v-4A3 3 0 0 1 4 13.5z"/><circle class="typing" cx="8.6" cy="10" r="1.2"/><circle class="typing" cx="12" cy="10" r="1.2"/><circle class="typing" cx="15.4" cy="10" r="1.2"/></svg>
+    <svg class="fab-svg chat-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+
+<script src="js/companies.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/chatbot.js"></script>
+<script src="js/main.js"></script>
+<script src="js/motion.js"></script>
+</body>
+</html>

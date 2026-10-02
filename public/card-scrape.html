@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Scrape — One Ecosystem</title>
+<meta name="description" content="Scan a visiting card, read the QR, and capture all 38 Partner Registry fields in one pass.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/card-scrape.css">
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-orb orb-a" aria-hidden="true"></div>
+<div class="bg-orb orb-b" aria-hidden="true"></div>
+
+<header class="cs-nav">
+  <div class="cs-wrap">
+    <a href="index.html" class="cs-brand"><span class="dot"></span> One Ecosystem</a>
+    <nav>
+      <a href="#groups">Fields</a>
+      <a href="#workspace">Scan a card</a>
+      <a href="#records">Records</a>
+      <a href="admin.html" class="pill" id="sessionPill">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="cs-hero">
+  <div class="cs-wrap hero-grid">
+    <div class="hero-copy">
+      <div class="tag reveal"><span class="spark"></span> Partner Registry · Card Scrape</div>
+      <h1 class="reveal">The age of <em>hand-keying</em> visiting cards is over.</h1>
+      <p class="lede reveal">Drop a card photo. We read the QR first, OCR the rest, and lay out all <b>38 registry fields</b> for you to confirm. Nothing scraped goes live until a person verifies it.</p>
+      <div class="hero-ctas reveal">
+        <a href="#workspace" class="cs-btn primary">Scan a card →</a>
+        <a href="#groups" class="cs-btn ghost">See the 38 fields</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div><b data-count="38">0</b><span>fields captured</span></div>
+        <div><b data-count="7">0</b><span>field groups</span></div>
+        <div><b data-count="1">0</b><span>human check</span></div>
+      </div>
+    </div>
+
+    <div class="scan-demo reveal" aria-hidden="true">
+      <div class="demo-card">
+        <div class="demo-logo">CC</div>
+        <div class="demo-lines">
+          <strong>Rajesh Menon</strong>
+          <span>Managing Partner</span>
+          <span class="muted">Coastline Caterers</span>
+        </div>
+        <div class="demo-contact">
+          <span>+91 98450 77112</span>
+          <span>rajesh@coastlinecaterers.in</span>
+          <span>coastlinecaterers.in</span>
+        </div>
+        <div class="demo-qr"></div>
+        <div class="laser"></div>
+      </div>
+      <div class="demo-chips">
+        <span style="--d:0">full_name <i>High</i></span>
+        <span style="--d:1">designation <i>High</i></span>
+        <span style="--d:2">business_name <i>High</i></span>
+        <span style="--d:3">phone_primary <i>+919845077112</i></span>
+        <span style="--d:4">email_primary <i>High</i></span>
+        <span style="--d:5">qr_payload <i>vCard</i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GROUPS ================= -->
+<section id="groups" class="cs-section">
+  <div class="cs-wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">What gets captured</div>
+      <h2>Seven groups, one record per card</h2>
+      <p>Every field comes from the <em>Card Scrape Fields</em> tab: where it comes from, how reliably OCR reads it, and why it matters for the follow-up.</p>
+    </div>
+    <div class="group-grid" id="groupGrid"><!-- rendered by card-scrape.js --></div>
+  </div>
+</section>
+
+<!-- ================= WORKSPACE ================= -->
+<section id="workspace" class="cs-section">
+  <div class="cs-wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Workspace</div>
+      <h2>Scan, verify, save</h2>
+      <p>OCR runs in your browser. Fields that came from the card glow as they fill. Check each one against the photo before you save.</p>
+    </div>
+
+    <div class="signin-note" id="signinNote" hidden>
+      You're not signed in. You can scan and review, but saving needs an admin session — <a href="admin.html">sign in on the Admin page</a>, then come back.
+    </div>
+
+    <div class="ws-grid">
+      <aside class="ws-left">
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a visiting card photo">
+          <input type="file" id="cardFile" accept="image/*" hidden>
+          <img id="cardImg" alt="Uploaded visiting card" hidden>
+          <div class="drop-empty" id="dropEmpty">
+            <div class="drop-icon">⇪</div>
+            <strong>Drop a visiting card</strong>
+            <span>or click to choose a photo · JPG / PNG</span>
+          </div>
+          <div class="drop-laser" id="dropLaser"></div>
+        </div>
+        <div class="scan-status" id="scanStatus">Waiting for a card.</div>
+        <div class="scan-bar"><span id="scanBar"></span></div>
+        <div class="ai-status" id="aiStatus" hidden><i aria-hidden="true"></i><span></span></div>
+
+        <div class="ring-card">
+          <svg viewBox="0 0 120 120" class="ring">
+            <circle cx="60" cy="60" r="52" class="ring-bg"/>
+            <circle cx="60" cy="60" r="52" class="ring-fg" id="ringFg"/>
+          </svg>
+          <div class="ring-label"><b id="filledCount">0</b><span>of <em id="fillableCount">33</em> filled</span></div>
+        </div>
+
+        <nav class="group-nav" id="groupNav"><!-- rendered --></nav>
+
+        <details class="raw">
+          <summary>Raw OCR text</summary>
+          <pre id="rawText">Nothing scanned yet.</pre>
+        </details>
+      </aside>
+
+      <form class="ws-form" id="scrapeForm" autocomplete="off">
+        <div id="formGroups"><!-- rendered --></div>
+        <div class="form-actions">
+          <label class="verify">
+            <input type="checkbox" name="card_verified" value="true">
+            <span>I've checked these values against the card image</span>
+          </label>
+          <div class="actions-right">
+            <button type="reset" class="cs-btn ghost small" id="resetBtn">Clear</button>
+            <button type="submit" class="cs-btn primary" id="saveBtn">Save as draft</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RECORDS ================= -->
+<section id="records" class="cs-section">
+  <div class="cs-wrap">
+    <div class="sec-head row reveal">
+      <div>
+        <div class="kicker">Captured so far</div>
+        <h2>Recent card records</h2>
+      </div>
+      <div class="rec-actions">
+        <button class="cs-btn ghost small" id="refreshRecords" type="button">Refresh</button>
+        <a class="cs-btn ghost small" href="/api/admin/card-scrape.csv" download>Download CSV</a>
+      </div>
+    </div>
+    <div class="table-wrap reveal">
+      <table class="rec-table">
+        <thead><tr><th>Entity</th><th>Name</th><th>Business</th><th>City</th><th>Met at</th><th>Priority</th><th>Verified</th></tr></thead>
+        <tbody id="recordsBody"><tr><td colspan="7">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="cs-foot">
+  <div class="cs-wrap">One Ecosystem · Partner Registry · Records start as <code>draft</code> and stay there until verified.</div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script src="js/card-ai.js"></script>
+<script src="js/card-scrape.js"></script>
+</body>
+</html>
