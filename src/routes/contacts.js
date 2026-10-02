@@ -1,4 +1,4 @@
-// Admin: visiting-card contacts from the original OCR scanner on admin.html
+// Admin: visiting-card contacts from the original OCR scanner on the admin panel
 const express = require("express");
 const fs = require("fs");
 const { CONTACTS_CSV } = require("../config/paths");

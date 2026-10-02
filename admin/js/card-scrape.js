@@ -666,7 +666,7 @@ form.addEventListener("reset", () => {
 async function loadRecords(highlightId) {
   const body = $("recordsBody");
   if (!signedIn) {
-    body.innerHTML = `<tr><td colspan="7">Sign in on the <a href="admin.html">Admin page</a> to see captured records.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7">Sign in on the <a href="/admin">Admin page</a> to see captured records.</td></tr>`;
     return;
   }
   try {

@@ -7,7 +7,7 @@
 <meta name="description" content="Scan a visiting card, read the QR, and capture all 38 Partner Registry fields in one pass.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/card-scrape.css">
+<link rel="stylesheet" href="/admin/css/card-scrape.css">
 </head>
 <body>
 
@@ -17,12 +17,12 @@
 
 <header class="cs-nav">
   <div class="cs-wrap">
-    <a href="index.html" class="cs-brand"><span class="dot"></span> One Ecosystem</a>
+    <a href="/admin" class="cs-brand"><span class="dot"></span> One Ecosystem</a>
     <nav>
       <a href="#groups">Fields</a>
       <a href="#workspace">Scan a card</a>
       <a href="#records">Records</a>
-      <a href="admin.html" class="pill" id="sessionPill">Admin</a>
+      <a href="/admin" class="pill" id="sessionPill">Admin</a>
     </nav>
   </div>
 </header>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="signin-note" id="signinNote" hidden>
-      You're not signed in. You can scan and review, but saving needs an admin session — <a href="admin.html">sign in on the Admin page</a>, then come back.
+      You're not signed in. You can scan and review, but saving needs an admin session — <a href="/admin">sign in on the Admin page</a>, then come back.
     </div>
 
     <div class="ws-grid">
@@ -177,7 +177,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-<script src="js/card-ai.js"></script>
-<script src="js/card-scrape.js"></script>
+<script src="/admin/js/card-ai.js"></script>
+<script src="/admin/js/card-scrape.js"></script>
 </body>
 </html>

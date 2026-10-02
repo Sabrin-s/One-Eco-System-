@@ -2,8 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const { PUBLIC_DIR } = require("./config/paths");
 const { loadSession } = require("./middleware/auth");
+const { siteSplit } = require("./middleware/site-split");
 
 const app = express();
+app.set("trust proxy", 1); // behind Render/other hosts: real host + https for cookies
 
 app.use(cors());
 // Card photos for AI extraction are larger than the default 100 KB JSON limit.
@@ -13,6 +15,7 @@ app.use(express.json({
     req.rawBody = Buffer.from(buffer); // kept for Meta webhook signature checks
   }
 }));
+app.use(siteSplit()); // admin area at /admin (or its own host) — before the public files
 app.use(express.static(PUBLIC_DIR));
 app.use(loadSession);
 

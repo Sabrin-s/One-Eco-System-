@@ -13,13 +13,13 @@ messaging workflows.
 - **Booking flow** — a 3-step form per company (~3 minutes), saved to
   `data/bookings.csv` via the Node server, with a WhatsApp hand-off link on
   the confirmation screen.
-- **Event registration** — admins create and publish events at `/admin.html`;
+- **Event registration** — admins create and publish events at `/admin`;
   attendees browse and register at `/events.html` without creating an account.
 - **Event assistant** — floating chat widget on the home, booking, and events pages.
   It answers common questions with local keyword rules and can collect a
   booking enquiry, show a review summary, and submit it to the existing
   `/api/booking` endpoint after confirmation.
-- **Admin panel** (`/admin.html`) — credentials are verified by the server and
+- **Admin panel** (`/admin`, kept off the public pages — see "Public and admin links" below) — credentials are verified by the server and
   admin APIs require an HTTP-only session cookie.
   - Create/publish events, review registrations, mark attendance, and trigger
     thank-you workflows for present attendees who opted in to WhatsApp.
@@ -124,6 +124,21 @@ play/replay/mute buttons already have hooks in `avatar.js` to control it.
 - **WhatsApp policy** may require an approved message template outside the
   customer-service window. Configure that in n8n before production.
 
+## Public and admin links
+
+One app serves both sides, so bookings and registrations made on the public
+site appear in the admin panel straight away.
+
+- **Public site:** `https://your-site/` (home, events, booking). It has no link to the admin area.
+- **Admin:** `https://your-site/admin` (sign in) and `https://your-site/admin/card-scrape`.
+  The old `/admin.html` and `/card-scrape.html` links redirect there.
+
+To give admin its own domain, point a second domain (e.g. `admin.example.com`)
+at the same app and set `ADMIN_HOST=admin.example.com` and
+`PUBLIC_URL=https://www.example.com`. The admin area and admin APIs then only
+answer on the admin domain (404 on the public one), and public pages opened
+on the admin domain redirect to the public site.
+
 ## Project structure
 
 ```
@@ -142,37 +157,42 @@ event-coordinator/
 │   │   └── faq.js             FAQ auto-reply rules for WhatsApp/Instagram
 │   ├── middleware/
 │   │   ├── auth.js            Session cookie, requireAdmin
-│   │   └── meta-signature.js  Meta webhook signature check
+│   │   ├── meta-signature.js  Meta webhook signature check
+│   │   └── site-split.js      Public vs admin links (/admin, or ADMIN_HOST)
 │   └── routes/
 │       ├── auth.js            /api/admin/login, session, logout
 │       ├── bookings.js        /api/booking, /api/bookings
 │       ├── contacts.js        /api/admin/contact, /api/contacts
 │       ├── card-scrape.js     /api/admin/card-scrape (38 registry fields)
+│       ├── card-ai.js         /api/admin/card-ai (local Ollama vision model)
 │       ├── events.js          Events, registrations, attendance, thank-you
 │       ├── integrations.js    /api/admin/integrations status
 │       └── webhooks.js        /webhook/whatsapp, /webhook/instagram
-├── public/                    Static frontend (served as-is)
+├── public/                    Public site, served at "/"
 │   ├── index.html             Home page with voiced portrait greeter
 │   ├── events.html            Public event calendar and registration
 │   ├── booking.html           Booking form (reads ?company= slug)
-│   ├── admin.html             Admin event, attendee, and contact panel
-│   ├── card-scrape.html       Partner Registry card scan + verify workspace
 │   ├── assets/
 │   │   ├── images/            jalpa-portrait.jpg
 │   │   └── audio/             jalpa-intro.ogg
-│   ├── css/
-│   │   ├── style.css          Shared site styles
-│   │   └── card-scrape.css    Card Scrape page styles
+│   ├── css/style.css          Site styles (shared with admin)
 │   └── js/
-│       ├── companies.js       Single source of truth for the 5 companies
+│       ├── companies.js       Single source of truth for the 5 companies (shared)
 │       ├── avatar.js          Voice-note greeter with live waveform
 │       ├── chatbot.js         FAQ and conversational booking widget
 │       ├── events.js          Public event discovery and registration
-│       ├── events-admin.js    Admin event, roster, and attendance flows
 │       ├── main.js            Home page rendering (doors + FAQ)
-│       ├── booking.js         Booking form logic
-│       ├── admin.js           OCR + admin data tables
-│       └── card-scrape.js     Card Scrape fields, QR/OCR parsing, save
+│       ├── motion.js          Scroll/hero animations
+│       └── booking.js         Booking form logic
+├── admin/                     Admin area, served at "/admin"
+│   ├── index.html             /admin: events, attendees, bookings, contacts, card scan
+│   ├── card-scrape.html       /admin/card-scrape: 38-field card scan + verify
+│   ├── css/card-scrape.css
+│   └── js/
+│       ├── admin.js           Login, OCR + AI card scan, data tables
+│       ├── events-admin.js    Event, roster, and attendance flows
+│       ├── card-scrape.js     Card Scrape fields, QR/OCR parsing, save
+│       └── card-ai.js         Browser helper for AI extraction
 ├── data/                      Runtime CSV/JSON records (git-ignored)
 └── docs/
     ├── N8N_SETUP.md           Sheets and messaging workflow setup

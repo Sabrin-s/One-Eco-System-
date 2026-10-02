@@ -6,16 +6,16 @@
 <title>Admin — One Ecosystem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
 <header class="topnav">
   <div class="wrap">
-    <a href="index.html" class="brand"><span class="dot"></span> One Ecosystem</a>
+    <a href="/admin" class="brand"><span class="dot"></span> One Ecosystem</a>
     <nav>
-      <a href="index.html">Public site</a>
-      <a href="card-scrape.html">Card Scrape</a>
+      <a href="/index.html">Public site</a>
+      <a href="/admin/card-scrape">Card Scrape</a>
     </nav>
   </div>
 </header>
@@ -108,7 +108,7 @@
   <div class="tab-pane" data-pane="cards">
     <div class="card">
       <h3>Upload a visiting card</h3>
-      <p>A quick text scan runs in your browser first, then a local AI model (open-source, via Ollama — the photo never leaves this computer) re-reads the card and corrects the fields. Review, fix anything, then save. For all 38 registry fields use the <a href="card-scrape.html">Card Scrape</a> page.</p>
+      <p>A quick text scan runs in your browser first, then a local AI model (open-source, via Ollama — the photo never leaves this computer) re-reads the card and corrects the fields. Review, fix anything, then save. For all 38 registry fields use the <a href="/admin/card-scrape">Card Scrape</a> page.</p>
       <div class="drop-zone" id="dropZone">
         <p style="margin:0">Drag & drop a card image here, or click to choose a file</p>
         <input type="file" id="cardInput" accept="image/*" style="display:none">
@@ -186,9 +186,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="js/companies.js"></script>
-<script src="js/card-ai.js"></script>
-<script src="js/admin.js"></script>
-<script src="js/events-admin.js"></script>
+<script src="/js/companies.js"></script>
+<script src="/admin/js/card-ai.js"></script>
+<script src="/admin/js/admin.js"></script>
+<script src="/admin/js/events-admin.js"></script>
 </body>
 </html>

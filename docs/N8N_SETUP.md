@@ -116,7 +116,7 @@ Instagram questions for replies, but does not send post-event Instagram DMs.
 
 1. Start n8n and activate each workflow; use production webhook URLs.
 2. Add the URLs and shared secret to the app's `.env`, then restart Node.
-3. Sign in to `/admin.html` and check the **Automations** tab. It reports
+3. Sign in to `/admin` and check the **Automations** tab. It reports
    whether each URL and the shared secret are configured, never their values.
 4. Create a draft event, publish it, and submit a test registration at
    `/events.html`. Confirm the local registration and Sheets row.
