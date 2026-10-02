@@ -67,5 +67,5 @@ window.CardAI = (function () {
     return { fields: normalize(data.fields), model: data.model, seconds: data.seconds };
   }
 
-  return { status, extract };
+  return { status, extract, normalize };
 })();

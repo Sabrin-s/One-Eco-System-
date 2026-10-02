@@ -110,7 +110,8 @@ async function runCardAi(file, scan) {
   if (!s.available) { setAiNote(`AI check off — ${s.reason}`, "off"); return; }
   const started = Date.now();
   const tick = setInterval(() => {
-    if (scan === cardScan) setAiNote(`🤖 AI (${s.model}) is reading the card… ${Math.round((Date.now() - started) / 1000)}s — usually 1–3 minutes on this computer.`, "busy");
+    const expect = s.provider === "groq" ? "usually a few seconds" : "usually 1–3 minutes when the model runs on this PC";
+    if (scan === cardScan) setAiNote(`🤖 AI (${s.model}) is reading the card… ${Math.round((Date.now() - started) / 1000)}s — ${expect}.`, "busy");
   }, 1000);
   setAiNote(`🤖 AI (${s.model}) is reading the card…`, "busy");
   try {
@@ -149,61 +150,40 @@ function handleCardFile(file) {
   ocrStatus.textContent = "Reading card…";
   extractCard.style.display = "none";
   runCardAi(file, scan);
-
-  Tesseract.recognize(file, "eng", {
-    logger: (m) => {
-      if (m.status === "recognizing text") {
-        ocrStatus.textContent = `Reading card… ${Math.round(m.progress * 100)}%`;
-      }
-    }
-  }).then(({ data: { text } }) => {
-    ocrStatus.textContent = "Done — please verify the fields below.";
-    const parsed = parseCardText(text);
-    if (scan !== cardScan) return;
-    Object.entries(parsed).forEach(([k, v]) => {
-      const el = extractForm[k];
-      // Don't overwrite an AI reading (or your own typing) with the quick scan.
-      if (el && !el.classList.contains("ai-filled") && !el.dataset.userEdited) el.value = v;
-    });
-    const rawLabel = document.createElement("strong");
-    rawLabel.textContent = "Raw OCR text:";
-    rawTextBox.replaceChildren(rawLabel, document.createElement("br"), document.createTextNode(text));
-    extractCard.style.display = "block";
-  }).catch(err => {
-    ocrStatus.textContent = "Couldn't read the image — try a clearer photo.";
-    console.error(err);
-  });
+  quickScan(file, scan);
 }
 
-function parseCardText(raw) {
-  const lines = raw.split("\n").map(l => l.trim()).filter(Boolean);
-  const joined = raw.replace(/\n/g, " ");
-
-  const email = (joined.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/) || [""])[0];
-  const phone = (joined.match(/(\+?\d[\d\s-]{8,14}\d)/) || [""])[0];
-  const instagram = (joined.match(/(?<![\w.])@[a-zA-Z0-9._]{3,}/) || [""])[0];
-  const website = (joined.match(/\b(?:www\.)?[a-zA-Z0-9-]+\.(?:com|in|global|ai|co)\b/) || [""])[0];
-
-  // Heuristic: first non-empty line = name; a line containing common role
-  // keywords = job role; a line with numbers+commas or "road/street/nagar" = address.
-  const roleWords = /founder|director|manager|consultant|head|ceo|coo|cfo|owner|executive|designer|planner|lead/i;
-  const addressWords = /road|street|nagar|floor|sector|colony|plot|city|india|ave|lane/i;
-
-  let name = lines[0] || "";
-  let role = lines.find(l => roleWords.test(l) && l !== name) || "";
-  let address = lines.find(l => addressWords.test(l)) || "";
-  let company = lines.find(l => l !== name && l !== role && l !== address && !l.includes("@") && !/\d{4,}/.test(l)) || "";
-
-  return {
-    name,
-    role,
-    company,
-    email,
-    phone: phone.trim(),
-    instagram,
-    address,
-    other: website ? `Website: ${website}` : ""
-  };
+// Quick scan with the shared OCR (admin/js/card-ocr.js): straightens sideways
+// photos, cleans up lighting, reads QR codes, then parses the registry fields.
+async function quickScan(file, scan) {
+  try {
+    await cardPreview.decode().catch(() => {});
+    const found = {};
+    const qr = decodeQr(cardPreview);
+    if (qr) Object.assign(found, parseVCard(qr));
+    const best = await readUpright(cardPreview, (text) => {
+      if (scan === cardScan) ocrStatus.textContent = text;
+    });
+    if (scan !== cardScan) return;
+    if (best.rotation) cardPreview.src = best.canvas.toDataURL("image/jpeg", 0.9); // show it upright
+    const text = best.data.text || "";
+    const parsed = parseCardText(text, ocrLines(best.data));
+    for (const [k, v] of Object.entries(parsed)) if (v && !found[k]) found[k] = v;
+    const contact = aiToContact(CardAI.normalize(found));
+    Object.entries(contact).forEach(([k, v]) => {
+      const el = extractForm[k];
+      // Don't overwrite an AI reading (or your own typing) with the quick scan.
+      if (el && !el.classList.contains("ai-filled") && !el.dataset.userEdited) el.value = v || "";
+    });
+    ocrStatus.textContent = "Done — please verify the fields below.";
+    const rawLabel = document.createElement("strong");
+    rawLabel.textContent = "Raw OCR text:";
+    rawTextBox.replaceChildren(rawLabel, document.createElement("br"), document.createTextNode(qr ? `QR: ${qr}\n\n${text}` : text));
+    extractCard.style.display = "block";
+  } catch (err) {
+    if (scan === cardScan) ocrStatus.textContent = "Couldn't read the image — try a clearer photo.";
+    console.error(err);
+  }
 }
 
 document.getElementById("saveContactBtn").addEventListener("click", async () => {
